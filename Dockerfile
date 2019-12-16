@@ -14,9 +14,8 @@
 #    limitations under the License.
 #
 
-spring.profiles.include=common
-
-# DataSource settings
-spring.datasource.url=jdbc:hsqldb:file:~/db/jpetstore
-
-
+FROM tomcat
+RUN mkdir /data
+ADD jmx_prometheus_javaagent-0.12.0.jar /data/jmx_prometheus_javaagent-0.12.0.jar
+ADD prometheus-jmx-config.yaml /data/prometheus-jmx-config.yaml
+COPY target/jpetstore.war /usr/local/tomcat/webapps/

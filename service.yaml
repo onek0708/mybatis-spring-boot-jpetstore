@@ -14,9 +14,18 @@
 #    limitations under the License.
 #
 
-spring.profiles.include=common
-
-# DataSource settings
-spring.datasource.url=jdbc:hsqldb:file:~/db/jpetstore
-
-
+kind: Service
+apiVersion: v1
+metadata:
+  name: tomcat-service
+spec:
+  selector:
+    app: tomcat
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+    name: http
+  - port: 8088
+    targetPort: 8088
+    name: prom

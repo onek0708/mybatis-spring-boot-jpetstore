@@ -14,9 +14,18 @@
 #    limitations under the License.
 #
 
-spring.profiles.include=common
-
-# DataSource settings
-spring.datasource.url=jdbc:hsqldb:file:~/db/jpetstore
-
-
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: tomcat-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: jpetstore.example.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: tomcat-service
+          servicePort: 80
