@@ -369,11 +369,11 @@
 	<distributionManagement>
 		<snapshotRepository>
 		  <id>nexus-snapshots</id>
-		  <url>http://nexus.example.com/repository/maven-snapshots/</url>
+		  <url>http://nexus-sonatype-nexus.devops.svc.cluster.local:8080/repository/maven-snapshots/</url>
 		</snapshotRepository>
 		<repository>
 		  <id>nexus-releases</id>
-		  <url>http://nexus.example.com/repository/maven-releases/</url>
+		  <url>http://nexus-sonatype-nexus.devops.svc.cluster.local:8080/repository/maven-releases/</url>
 		</repository>
 	</distributionManagement>
 
