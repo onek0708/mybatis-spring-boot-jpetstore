@@ -1,6 +1,6 @@
 pipeline {
 	agent {
-		label 'default-dkmsq'
+		label 'any'
 	}
 	stages {
 		stage('Build') {
