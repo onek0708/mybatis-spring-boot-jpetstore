@@ -14,21 +14,13 @@
 #    limitations under the License.
 #
 
-# MyBatis settings
-mybatis.type-aliases-package=com.kazuki43zoo.jpetstore.domain
+./mvnw clean package
+docker build -t onek0708/jpetstore2:v1 .
+docker push onek0708/jpetstore2:v1
+kubectl create ns jpetstore2
+kubectl apply -f deployment.yaml -n jpetstore2
+kubectl apply -f service.yaml -n jpetstore2
+kubectl apply -f ingress.yaml -n jpetstore2
 
-# Spring Transaction management settings
-spring.transaction.default-timeout=10
-spring.transaction.rollback-on-commit-failure=true
-
-# Logging settings
-logging.level.com.kazuki43zoo.jpetstore=TRACE
-
-management.endpoint.metrics.enabled=true
-management.endpoints.web.exposure.include=*
-management.endpoint.prometheus.enabled=true
-management.metrics.export.prometheus.enabled=true
-
-spring.application.name=jpetstore
-management.metrics.tags.application=${spring.application.name}
-
+#kubectl create configmap tomcat-manager --from-file=manager.xml -n jpetstore2
+#kubectl create configmap tomcat-users --from-file=tomcat-users.xml -n jpetstore2

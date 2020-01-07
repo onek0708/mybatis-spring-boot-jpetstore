@@ -1,5 +1,5 @@
 /*
- *    Copyright 2016-2019 the original author or authors.
+ *    Copyright 2016-2020 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,10 +18,15 @@ package com.kazuki43zoo.jpetstore;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import org.springframework.context.annoatation.Bean;
 
 import io.github.mweirauch.micrometer.jvm.extras.*;
 import io.micrometer.core.instrument.binder.MeterBinder;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+
+import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
+import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * @author Kazuki Shimizu
@@ -34,6 +39,7 @@ public class JpetstoreApplication {
 	}
 
 	/* With Spring */
+
     @Bean
     public MeterBinder processMemoryMetrics() {
         return new ProcessMemoryMetrics();
@@ -43,5 +49,11 @@ public class JpetstoreApplication {
     public MeterBinder processThreadMetrics() {
         return new ProcessThreadMetrics();
     }
+
+
+	@Bean
+	MeterRegistryCustomizer<MeterRegistry> configurer(@Value("${spring.application.name}") String applicationName) {
+		return (registry) -> registry.config().commonTags("application", applicationName);
+	}
 
 }

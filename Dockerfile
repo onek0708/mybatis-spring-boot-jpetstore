@@ -1,5 +1,5 @@
 #
-#    Copyright 2016-2019 the original author or authors.
+#    Copyright 2016-2020 the original author or authors.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
@@ -14,8 +14,37 @@
 #    limitations under the License.
 #
 
-FROM tomcat
-RUN mkdir /data
-ADD jmx_prometheus_javaagent-0.12.0.jar /data/jmx_prometheus_javaagent-0.12.0.jar
-ADD prometheus-jmx-config.yaml /data/prometheus-jmx-config.yaml
-COPY target/jpetstore.war /usr/local/tomcat/webapps/
+
+FROM openjdk:11.0.5-jdk-slim
+MAINTAINER Forest Keepers <Jeroen.knoops@philips.com>
+
+# Default to UTF-8 file.encoding
+ENV LANG C.UTF-8
+
+RUN apt-get update && \
+    apt-get install -y \
+      git \
+      wget \
+      curl \
+      bash && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get clean 
+
+RUN addgroup --system java && \
+    adduser --system --group java
+
+RUN mkdir /app
+RUN chown java:java /app
+
+USER java
+
+WORKDIR /app
+
+#ADD REPO .
+#ADD TAGS .
+
+ENV JAVA_TOOL_OPTIONS="-XX:+UseContainerSupport"
+
+COPY target/mybatis-spring-boot-jpetstore-2.0.0-SNAPSHOT.jar /app
+
+ENTRYPOINT ["java","-jar","/app/mybatis-spring-boot-jpetstore-2.0.0-SNAPSHOT.jar"]

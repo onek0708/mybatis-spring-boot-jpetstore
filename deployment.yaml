@@ -1,5 +1,5 @@
 #
-#    Copyright 2016-2019 the original author or authors.
+#    Copyright 2016-2020 the original author or authors.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
@@ -17,33 +17,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tomcat-deployment
+  name: jpetstore2-deployment
   labels:
-    app: tomcat
+    app: jpetstore2
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: tomcat
+      app: jpetstore2
   template:
     metadata:
       labels:
-        app: tomcat
+        app: jpetstore2
       annotations:
         prometheus.io/scrape: 'true'
         prometheus.io/port: '8088'
         #prometheus.io/path: "/jpetstore/metrics"
     spec:
       containers:
-      - name: tomcat
-        image: onek0708/jpetstore:v2
+      - name: jpetstore2
+        image: onek0708/jpetstore2:v1
         ports:
         - containerPort: 8080
-        env:
-        - name: JAVA_AGENT_PORT
-          value: "8088"
-        - name : JAVA_OPTS
-          value : -javaagent:/data/jmx_prometheus_javaagent-0.12.0.jar=8088:/data/prometheus-jmx-config.yaml
         volumeMounts:
           - name: tomcat-users
             mountPath: /usr/local/tomcat/conf/tomcat-users.xml
